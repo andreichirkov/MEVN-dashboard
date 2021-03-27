@@ -1,4 +1,9 @@
 export default {
+  server: {
+    port: 8000, // default: 3000
+    // host: '0.0.0.0', // default: localhost,
+    // timing: false
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'mevn-dashboard',
@@ -17,10 +22,13 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    // './assets/styles/global.scss'
+    // { src: './assets/styles/global.scss', lang: 'scss'}
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '@/plugins/axiosport.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -36,10 +44,20 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+
+    '@nuxtjs/style-resources'
   ],
 
+  styleResources: {
+    scss: [
+      './assets/styles/colors.scss',
+    ]
+  },
+
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: process.env.NUXT_APP_BASE_URL
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
