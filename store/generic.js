@@ -1,7 +1,7 @@
 import GenericService from "@/services/generic.service";
 
 //дистриктурируем props
-const crudStore = ({ name, url, keyName }) => {
+const crudStore = ({ name, url }) => {
   const genericService = new GenericService({
     name, url
   })
