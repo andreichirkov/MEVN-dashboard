@@ -16,13 +16,10 @@ const crudStore = ({ name, url }) => {
     }),
     actions: {
       async fetchAll({ commit }) {
-        console.log(2)
         try {
-          console.log(3)
           const items = await genericService.fetchAll()
           commit('fetchItemsSuccess', items)
         } catch(err) {
-          console.log(4)
           commit('fetchItemsFail', {
             errType: `${name} fetchAll failed`
           })
@@ -41,9 +38,9 @@ const crudStore = ({ name, url }) => {
       async create({ commit }, payload) {
         try {
           const item = await genericService.create(payload)
-          commit('createItemSuccess', item)
+          commit('createSuccess', item)
         } catch(err) {
-          commit('createItemFail', {
+          commit('createFail', {
             errType: `${name} create failed`
           })
         }
@@ -51,7 +48,7 @@ const crudStore = ({ name, url }) => {
       async update({ commit }, { payload, id }) {
         try {
           const item = await genericService.create(id, payload)
-          commit('updateItemSuccess', item)
+          commit('updateSuccess', item)
         } catch(err) {
           commit('updateFail', {
             errType: `${name} update failed`

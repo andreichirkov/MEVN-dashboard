@@ -7,14 +7,10 @@ export default class GenericService {
   }
 
   async fetchAll() {
-    console.log(5)
     try {
-      console.log(6)
       const { data } = await axios.get(`${this.url}/`)
-      console.log(data)
       return data
     } catch (err) {
-      console.log(7)
       throw {
         err,
         error: true,
