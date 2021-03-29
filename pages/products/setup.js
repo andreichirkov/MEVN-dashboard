@@ -6,9 +6,15 @@ export const columns = [
 
 export const actions = [
   {
-    className: 'btn btn-default',
+    className: 'btn btn-warning',
     label: 'Изменить',
     emit: 'onEdit',
+    actionKey: '_id'//айди элемента который нужно изменить
+  },
+  {
+    className: 'btn btn-danger',
+    label: 'X',
+    emit: 'onDelete',
     actionKey: '_id'//айди элемента который нужно изменить
   }
 ]

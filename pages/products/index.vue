@@ -1,25 +1,30 @@
 <template>
-  <div>
+  <Page>
     <h2>Товары</h2>
-    <nuxt-link to="products/form" class="btn btn-success">Добавить продукт</nuxt-link>
-    <Table :actions="actions"
-           :data="products"
-           @onEdit="handleEdit"
-           :columns="columns" />
-  </div>
+    <Card>
+      <nuxt-link to="products/form"
+                 class="btn btn-success">
+        Добавить продукт
+      </nuxt-link>
+      <Table :actions="actions"
+             :data="products"
+             @onEdit="handleEdit"
+             @onDelete="handleDelete"
+             :columns="columns" />
+    </Card>
+  </Page>
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex"
-
-import Table from '@/components/Table'
-
+import { mapActions, mapGetters } from "vuex"
 import { columns, actions } from '@/pages/products/setup'
 
 export default {
   name: "ProductsPage",
   components: {
-    Table
+    Table: () => import('@/components/Table'),
+    Card: () => import('@/components/Card'),
+    Page: () => import('@/components/Page')
   },
   computed: {
     ...mapGetters({
@@ -34,10 +39,15 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchProducts: 'products/fetchAll'
+      fetchProducts: 'products/fetchAll',
+      deleteProduct: 'products/delete'
     }),
-    handleEdit() {
-      console.log('изменяем')
+    handleEdit({ id }) {
+      this.$router.push(`products/form/${id}`)
+    },
+    async handleDelete({ id }) {
+      await this.deleteProduct(id)
+      await this.fetchProducts()
     }
   },
   mounted() {

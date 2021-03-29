@@ -34,7 +34,7 @@ export default class GenericService {
 
   async create(payload) {
     try{
-      const { data } = await request.post(`${this.create}/`, payload)
+      const { data } = await axios.post(`${this.url}/`, payload)
       return data
     } catch (err) {
       throw {

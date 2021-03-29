@@ -48,6 +48,7 @@ export default {
   methods: {
     //благодаря рефу можно вызывать внутренние методы компонента
     async validate() {
+      console.log('validate fn')
       const errors = await this.$refs.form.validate()
       const isValid = errors.length === 0
 
@@ -59,7 +60,8 @@ export default {
       //тайтл апдейт, прайс апдейт и тд
       this.$emit(`on${field}Update`, val)
     }
-  }
+  },
+  mounted() {}
 }
 </script>
 

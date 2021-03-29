@@ -7,7 +7,7 @@ export const schema = {
     {
       type: 'input',
       label: 'Название игры',
-      madel: 'title',
+      model: 'title',
       placeholder: 'Введите название игры',
       inputType: 'text',
       styleClasses: 'col-md-6'
@@ -15,7 +15,7 @@ export const schema = {
     {
       type: 'input',
       label: 'Стоимость игры',
-      madel: 'price',
+      model: 'price',
       placeholder: 'Введите стоимость игры',
       inputType: 'text',
       styleClasses: 'col-md-6'
@@ -23,16 +23,16 @@ export const schema = {
     {
       type: 'textArea',
       label: 'Описание игры',
-      madel: 'description',
+      model: 'description',
       placeholder: 'Введите описание игры',
       hint: 'Max 50 characters',
-      rows: 10,
+      rows: 2,
       styleClasses: 'col-md-12'
     },
     {
       type: 'input',
       label: 'Количество',
-      madel: 'amount',
+      model: 'amount',
       placeholder: 'Введите доступное количество',
       inputType: 'text',
       styleClasses: 'col-md-6'
@@ -40,7 +40,7 @@ export const schema = {
     {
       type: 'input',
       label: 'Изображение',
-      madel: 'imageUrl',
+      model: 'imageUrl',
       placeholder: 'Введите ссылку на картинку',
       inputType: 'text',
       styleClasses: 'col-md-6'

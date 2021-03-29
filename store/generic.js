@@ -38,19 +38,20 @@ const crudStore = ({ name, url }) => {
       async create({ commit }, payload) {
         try {
           const item = await genericService.create(payload)
-          commit('createSuccess', item)
+          commit('createItemSuccess', item)
         } catch(err) {
-          commit('createFail', {
+          commit('createItemFail', {
             errType: `${name} create failed`
           })
+          throw err
         }
       },
       async update({ commit }, { payload, id }) {
         try {
-          const item = await genericService.create(id, payload)
-          commit('updateSuccess', item)
+          const item = await genericService.update(id, payload)
+          commit('updateItemSuccess', item)
         } catch(err) {
-          commit('updateFail', {
+          commit('updateItemFail', {
             errType: `${name} update failed`
           })
         }
@@ -67,17 +68,17 @@ const crudStore = ({ name, url }) => {
       }
     },
     mutations: {
-      updateSuccess(state, item) {
+      updateItemSuccess(state, item) {
         state.item = item
       },
-      updateFail(state, err) {
+      updateItemFail(state, err) {
         state.itemError = err
       },
 
-      createSuccess(state, item) {
+      createItemSuccess(state, item) {
         state.item = item
       },
-      createFail(state, err) {
+      createItemFail(state, err) {
         state.itemError = err
       },
 
