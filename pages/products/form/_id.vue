@@ -24,6 +24,7 @@ import { relationsMixin } from "@/mixins/relation.mixin"
 
 export default {
   name: config.formName,
+  middleware: 'auth',
   mixins: [relationsMixin],
   components: {
     CrudForm: () => import('@/components/CrudForm'),

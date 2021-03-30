@@ -21,6 +21,7 @@ import { columns, actions, config } from './setup'
 
 export default {
   name: config.pageName,
+  middleware: 'auth',
   components: {
     Table: () => import('@/components/Table'),
     Card: () => import('@/components/Card'),

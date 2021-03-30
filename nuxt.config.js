@@ -29,7 +29,8 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '@/plugins/axiosport.js',
-    '@/plugins/formGenerator.js'
+    '@/plugins/formGenerator.js',
+    '@/plugins/vee-validate.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -45,14 +46,43 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    '@nuxtjs/auth'
   ],
 
   styleResources: {
     scss: [
       './assets/styles/colors.scss',
     ]
+  },
+
+  auth: {
+    strategies: {
+      local: {
+        scheme: 'refresh',
+        token: {
+          property: 'accessToken',
+          maxAge: 1800,
+          // type: 'Bearer'
+        },
+        refreshToken: {
+          property: 'refreshToken',
+          data: 'refreshToken',
+          maxAge: 60 * 60 * 24 * 30
+        },
+        endpoints: {
+          login: {
+            url: 'api/v1/login',
+            method: 'post',
+            propertyName: 'accessToken'
+          },
+          logout: {
+            url: 'api/v1/logout',
+            method: 'post',
+          }
+        }
+      }
+    }
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -62,5 +92,8 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    //указание что конкретно помещать в билд
+    //чтобы правильно забрал кусочек файла и восстановил зависимости внутри плагина
+    transpile: ['vee-validate/dist/rules']
   }
 }
