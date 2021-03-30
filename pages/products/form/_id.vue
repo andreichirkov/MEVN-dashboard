@@ -5,7 +5,7 @@
         <Card>
           <CrudForm v-if="model"
                     @on-submit="onFormSubmit"
-                    title="Форма продукта"
+                    :title="config.formTitle"
                     :formSchema="schema"
                     :formModel="model" />
           <p class="text-danger">{{ error }}</p>
@@ -17,11 +17,14 @@
 </template>
 
 <script>
-import { schema } from "@/pages/products/form/fields"
+import { schema, defaultForm } from "@/pages/products/form/fields"
 import { mapActions, mapGetters } from "vuex"
+import { config } from "../setup"
+import { relationsMixin } from "@/mixins/relation.mixin"
 
 export default {
-  name: "ProductForm",
+  name: config.formName,
+  mixins: [relationsMixin],
   components: {
     CrudForm: () => import('@/components/CrudForm'),
     Card: () => import('@/components/Card'),
@@ -31,13 +34,16 @@ export default {
     return {
       //как будет выглядеть форма
       model: null,
-      schema
+      schema,
+      config,
     }
   },
   computed: {
     ...mapGetters({
-      product: 'products/item',
-      error: 'products/itemError'
+      item: `${config.crudName}/item`,
+      error: `${config.crudName}/itemError`,
+
+      categories: 'categories/items'
     }),
     //диструктуризируем объект роута
     isUpdating: ({ $route: { params: { id } } }) => {
@@ -45,13 +51,15 @@ export default {
     }
   },
   async mounted() {
+    await this.fetchCategories()
+    this.setFields({ fieldKey: 'category', values: this.categories })
     if (this.isUpdating) {
       console.log('inside')
       //ждем получения одного продукта по id
-      await this.fetchProduct(this.$route.params.id)
+      await this.fetchItem(this.$route.params.id)
 
       //в model помещаем product из геттеров
-      this.model = { ...this.product }
+      this.model = { ...this.item }
       return
     }
     //в другом случае сетим пустую модель
@@ -59,36 +67,40 @@ export default {
   },
   methods: {
     ...mapActions({
-      createProduct: 'products/create',
-      fetchProduct: 'products/fetchOne',
-      updateProduct: 'products/update'
+      createItem: `${config.crudName}/create`,
+      fetchItem: `${config.crudName}/fetchOne`,
+      updateItem: `${config.crudName}/update`,
+
+      fetchCategories: 'categories/fetchAll'
     }),
     setModel() {
-       this.model = {
-        title: '',
-        description: '',
-        price: 0,
-        amount: 0,
-        imageURL: ''
+      this.model = {
+        ...defaultForm
       }
     },
-    async onProductUpdate() {
-      await this.updateProduct({
+    async onItemUpdate() {
+      // console.log(this.model)
+      const updatedModel = {
+        ...this.model,
+        products: this.model.category.id
+      }
+
+      await this.updateItem({
         id: this.$route.params.id,
-        payload: this.model
+        payload: updatedModel
       })
       this.$router.back()
     },
-    async onProductCreate() {
-      await this.createProduct(this.model)
+    async onItemCreate() {
+      await this.createItem(this.model)
       this.$router.back()
     },
     async onFormSubmit() {
       if (this.isUpdating) {
-         await this.onProductUpdate()
+        await this.onItemUpdate()
         return
       }
-      await this.onProductCreate()
+      await this.onItemCreate()
     }
   }
 }

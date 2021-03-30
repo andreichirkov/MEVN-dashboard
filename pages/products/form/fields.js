@@ -13,6 +13,23 @@ export const schema = {
       styleClasses: 'col-md-6'
     },
     {
+      type: 'vueMultiSelect',
+      model: 'category',
+      label: 'Категория',
+      placeholder: 'Добавить категорию',
+      styleClasses: 'col-md-6',
+      selectOptions: {
+        multiple: false,
+        key: 'title',
+        id: '_id',
+        trackBy: 'title',
+        label: 'title',
+        searchable: true,
+        hideSelected: true
+      },
+      values: []
+    },
+    {
       type: 'input',
       label: 'Стоимость игры',
       model: 'price',
@@ -46,4 +63,13 @@ export const schema = {
       styleClasses: 'col-md-6'
     }
   ]
+}
+
+export const defaultForm = {
+  title: '',
+  description: '',
+  price: 0,
+  amount: 0,
+  imageURL: '',
+  category: ''
 }

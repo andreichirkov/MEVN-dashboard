@@ -20,9 +20,11 @@
 import { schema, defaultForm } from "@/pages/categories/form/fields"
 import { mapActions, mapGetters } from "vuex"
 import { config } from "../setup"
+import { relationsMixin } from "@/mixins/relation.mixin"
 
 export default {
   name: config.formName,
+  mixins: [relationsMixin],
   components: {
     CrudForm: () => import('@/components/CrudForm'),
     Card: () => import('@/components/Card'),
@@ -33,13 +35,15 @@ export default {
       //как будет выглядеть форма
       model: null,
       schema,
-      config
+      config,
     }
   },
   computed: {
     ...mapGetters({
       item: `${config.crudName}/item`,
-      error: `${config.crudName}/itemError`
+      error: `${config.crudName}/itemError`,
+
+      products: 'products/items'
     }),
     //диструктуризируем объект роута
     isUpdating: ({ $route: { params: { id } } }) => {
@@ -47,6 +51,8 @@ export default {
     }
   },
   async mounted() {
+    await this.fetchProducts()
+    this.setFields({ fieldKey: 'products', values: this.products })
     if (this.isUpdating) {
       console.log('inside')
       //ждем получения одного продукта по id
@@ -63,17 +69,25 @@ export default {
     ...mapActions({
       createItem: `${config.crudName}/create`,
       fetchItem: `${config.crudName}/fetchOne`,
-      updateItem: `${config.crudName}/update`
+      updateItem: `${config.crudName}/update`,
+
+      fetchProducts: 'products/fetchAll'
     }),
     setModel() {
-       this.model = {
-        ...defaultForm
+      this.model = {
+      ...defaultForm
       }
     },
     async onItemUpdate() {
+      const updatedModel = {
+        ...this.model,
+        //возвращаем массив всех айдишников
+        products: this.model.products.map(product => product._id)
+      }
+
       await this.updateItem({
         id: this.$route.params.id,
-        payload: this.model
+        payload: updatedModel
       })
       this.$router.back()
     },

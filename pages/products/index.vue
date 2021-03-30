@@ -1,13 +1,13 @@
 <template>
   <Page>
-    <h2>Товары</h2>
+    <h2>{{ config.name }}</h2>
     <Card>
-      <nuxt-link to="products/form"
+      <nuxt-link :to="`${config.crudName}/form`"
                  class="btn btn-success">
-        Добавить продукт
+        Добавить {{ config.singleName }}
       </nuxt-link>
       <Table :actions="actions"
-             :data="products"
+             :data="items"
              @onEdit="handleEdit"
              @onDelete="handleDelete"
              :columns="columns" />
@@ -17,10 +17,10 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex"
-import { columns, actions } from '@/pages/products/setup'
+import { columns, actions, config } from './setup'
 
 export default {
-  name: "ProductsPage",
+  name: config.pageName,
   components: {
     Table: () => import('@/components/Table'),
     Card: () => import('@/components/Card'),
@@ -28,30 +28,31 @@ export default {
   },
   computed: {
     ...mapGetters({
-      products: 'products/items'
+      items: `${config.crudName}/items`
     }),
   },
   data() {
     return {
       columns,
-      actions
+      actions,
+      config
     }
   },
   methods: {
     ...mapActions({
-      fetchProducts: 'products/fetchAll',
-      deleteProduct: 'products/delete'
+      fetchItems: `${config.crudName}/fetchAll`,
+      deleteItem: `${config.crudName}/delete`
     }),
     handleEdit({ id }) {
-      this.$router.push(`products/form/${id}`)
+      this.$router.push(`${config.crudName}/form/${id}`)
     },
     async handleDelete({ id }) {
-      await this.deleteProduct(id)
-      await this.fetchProducts()
+      await this.deleteItem(id)
+      await this.fetchItems()
     }
   },
   mounted() {
-    this.fetchProducts()
+    this.fetchItems()
   }
 }
 </script>

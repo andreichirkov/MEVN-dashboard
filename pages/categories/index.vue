@@ -17,7 +17,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex"
-import { columns, actions, config } from '@/pages/categories/setup'
+import { columns, actions, config } from './setup'
 
 export default {
   name: config.pageName,

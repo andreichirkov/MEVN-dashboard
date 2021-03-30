@@ -13,6 +13,23 @@ export const schema = {
       styleClasses: 'col-md-6'
     },
     {
+      type: 'vueMultiSelect',
+      model: 'products',
+      label: 'Продукты',
+      placeholder: 'Добавить продукты',
+      styleClasses: 'col-md-6',
+      selectOptions: {
+        multiple: true,
+        key: 'title',
+        id: '_id',
+        trackBy: 'title',
+        label: 'title',
+        searchable: true,
+        hideSelected: true
+      },
+      values: []
+    },
+    {
       type: 'textArea',
       label: 'Описание категории',
       model: 'description',
