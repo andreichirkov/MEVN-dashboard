@@ -5,6 +5,7 @@
              :to="item.to">
       {{ item.name }}
     </NanItem>
+    <button class="btn btn-danger" @click="$emit('onLogout')">Выйти</button>
   </nav>
 </template>
 

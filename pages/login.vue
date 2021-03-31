@@ -2,7 +2,7 @@
   <div class="col-md-6 col-sm-12">
     <div class="login-form">
       <FormValidator ref="authForm">
-        <form>
+        <form @submit.prevent="onLogin">
           <FieldValidator name="email"
                           v-slot="{ errors }"
                           rules="email|required"
@@ -13,6 +13,7 @@
               <input type="text"
                      v-model="loginForm.email"
                      name="email"
+                     :class="{'is-invalid': errors.length > 0}"
                      class="form-control"
                      placeholder="Почта">
               <div v-for="(error, key) in errors"
@@ -42,8 +43,11 @@
               </div>
             </div>
           </FieldValidator>
-          <button type="submit" class="btn btn-black">Войти</button>
+          <button type="submit" class="btn btn-success">Войти</button>
           <!--        <button type="submit" class="btn btn-secondary">Register</button>-->
+          <div v-if="loginFormError" class="login-form_network-error">
+            {{ loginFormError }}
+          </div>
         </form>
       </FormValidator>
     </div>
@@ -66,17 +70,36 @@ export default {
       loginForm: {
         email: '',
         password: ''
-      }
+      },
+      loginFormError: null
     }
   },
   methods: {
     async onLogin() {
-
+      //включает валидацию по нажатию на кнопку
+      const isCorrect = await this.$refs.authForm.validate()
+      if (isCorrect) {
+        try {
+          const response = await this.$auth.loginWith('local', {
+            data: this.loginForm
+          })
+          this.$router.push('/products')
+        } catch (err) {
+          this.loginFormError = err.response.data.message
+          console.log(err.response)
+        }
+      }
     }
   }
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.login-form_network-error {
+  border-radius: 6px;
+  padding: 10px;
+  color: red;
+  background: lightpink;
+  margin-top: 20px;
+}
 </style>

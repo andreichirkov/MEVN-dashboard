@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <Nav :menu="menu" />
+    <Nav :menu="menu" @onLogout="handleLogout"/>
     <div class="content">
       <main>
         <Nuxt />
@@ -22,6 +22,13 @@ export default {
   data() {
     return {
       menu
+    }
+  },
+  methods: {
+    async handleLogout() {
+      localStorage.clear()
+      await this.$auth.logout()
+      this.$router.push('/login')
     }
   }
 }

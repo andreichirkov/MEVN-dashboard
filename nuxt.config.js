@@ -71,13 +71,14 @@ export default {
           maxAge: 60 * 60 * 24 * 30
         },
         endpoints: {
+          user: false,
           login: {
-            url: 'api/v1/login',
+            url: 'auth/login',
             method: 'post',
             propertyName: 'accessToken'
           },
           logout: {
-            url: 'api/v1/logout',
+            url: 'auth/logout',
             method: 'post',
           }
         }
