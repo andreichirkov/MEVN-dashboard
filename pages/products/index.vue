@@ -1,17 +1,17 @@
 <template>
-  <Page>
-    <h2>{{ config.name }}</h2>
-    <Card>
-      <nuxt-link :to="`${config.crudName}/form`"
-                 class="btn btn-success">
-        Добавить {{ config.singleName }}
-      </nuxt-link>
+  <Page :title="config.name">
+    <nuxt-link :to="`${config.crudName}/form`"
+               class="btn btn-success">
+      <icon icon="icwt-user-add" />
+      Добавить {{ config.singleName }}
+    </nuxt-link>
+    <TablePageWrapper>
       <Table :actions="actions"
              :data="items"
              @onEdit="handleEdit"
              @onDelete="handleDelete"
              :columns="columns" />
-    </Card>
+    </TablePageWrapper>
   </Page>
 </template>
 
@@ -23,9 +23,10 @@ export default {
   name: config.pageName,
   middleware: 'auth',
   components: {
-    Table: () => import('@/components/Table'),
-    Card: () => import('@/components/Card'),
-    Page: () => import('@/components/Page')
+    Table: () => import('@/components/table/Table'),
+    TablePageWrapper: () => import('@/components/TablePageWrapper'),
+    Page: () => import('@/components/Page'),
+    Icon: () => import('@/components/icon/icon')
   },
   computed: {
     ...mapGetters({

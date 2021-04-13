@@ -36,10 +36,6 @@ export default {
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-  ],
-
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/bootstrap
@@ -47,8 +43,11 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth-next'
   ],
+
+  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
+  buildModules: ['@nuxtjs/tailwindcss'],
 
   styleResources: {
     scss: [
@@ -62,6 +61,7 @@ export default {
         scheme: 'refresh',
         token: {
           property: 'accessToken',
+          //10 секунд для тестирования
           maxAge: 1800,
           // type: 'Bearer'
         },
@@ -72,6 +72,10 @@ export default {
         },
         endpoints: {
           user: false,
+          refresh: {
+            url: 'auth/refresh',
+            method: 'post',
+          },
           login: {
             url: 'auth/login',
             method: 'post',

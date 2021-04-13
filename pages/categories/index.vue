@@ -22,7 +22,7 @@ import { columns, actions, config } from './setup'
 export default {
   name: config.pageName,
   components: {
-    Table: () => import('@/components/Table'),
+    Table: () => import('@/components/table/Table'),
     Card: () => import('@/components/Card'),
     Page: () => import('@/components/Page')
   },
